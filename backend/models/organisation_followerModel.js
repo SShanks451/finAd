@@ -2,17 +2,19 @@ import mongoose from "mongoose";
 
 const organisationFollowerSchema = mongoose.Schema(
   {
-    orgId: {
+    organisation: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Organisation",
       required: true,
     },
-    userId: {
+
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
   },
+
   { timestamps: true }
 );
 

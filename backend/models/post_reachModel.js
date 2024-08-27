@@ -7,6 +7,7 @@ const postReachSchema = mongoose.Schema(
       ref: "OrganisationPost",
       required: true,
     },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

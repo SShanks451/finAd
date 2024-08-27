@@ -101,7 +101,7 @@ const OrganizationProfile = () => {
               </div>
               <div className="flex items-center mt-4">
                 <PeopleAltIcon fontSize="large" />
-                <div className="ml-2">{orgDetails.followers} Followers</div>
+                <div className="ml-2">{orgDetails.followersCount} Followers</div>
               </div>
             </div>
             <div className="mx-auto">

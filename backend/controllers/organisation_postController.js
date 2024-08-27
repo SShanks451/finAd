@@ -79,4 +79,4 @@ const updateReachCount = async (req, res) => {
   }
 };
 
-export { createPost, getAllPosts, updateLikesCount, updateReachCount, getPostsByOrganisationId };
+export { createPost, getAllPosts, getPostsByOrganisationId, updateLikesCount, updateReachCount };

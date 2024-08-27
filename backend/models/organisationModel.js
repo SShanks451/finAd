@@ -57,7 +57,7 @@ const organisationSchema = mongoose.Schema(
       required: true,
     },
 
-    followers: {
+    followersCount: {
       type: Number,
       default: 0,
     },

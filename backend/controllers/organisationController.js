@@ -74,18 +74,6 @@ const getOrganisationById = async (req, res) => {
   }
 };
 
-const updateOrganisation = async (req, res) => {
-  try {
-    const updatedOrganisation = await Organisation.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedOrganisation) {
-      return res.status(404).json({ message: "Organisation not found" });
-    }
-    res.status(200).json(updatedOrganisation);
-  } catch (error) {
-    res.status(500).json({ message: "Error while updating organisation", error });
-  }
-};
-
 const loginOrganisation = async (req, res) => {
   const { businessEmail, password } = req.body;
   try {
@@ -118,4 +106,15 @@ const logoutOrganisation = async (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-export { createOrganisation, updateOrganisation, loginOrganisation, logoutOrganisation, getOrganisationById };
+const updateFollowerCount = async (req, res) => {
+  const { orgId, incrementBy } = req.body;
+
+  try {
+    const updatedOrg = await Organisation.findByIdAndUpdate(orgId, { $inc: { followersCount: incrementBy } });
+    res.status(200).json(updatedOrg);
+  } catch (error) {
+    console.log("ERROR: ", error);
+  }
+};
+
+export { createOrganisation, loginOrganisation, logoutOrganisation, getOrganisationById, updateFollowerCount };

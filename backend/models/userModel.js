@@ -31,12 +31,12 @@ const userSchema = mongoose.Schema(
       required: true,
     },
 
-    instaFollowers: {
+    instagramFollowers: {
       type: Number,
       default: 0,
     },
 
-    instaScore: {
+    instagramScore: {
       type: Number,
       default: 0,
     },

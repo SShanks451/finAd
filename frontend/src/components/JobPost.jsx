@@ -18,6 +18,8 @@ const JobPost = ({ post }) => {
   const [isLikeClicked, setIsLikeClicked] = useState(false);
   const [isReach, setIsReach] = useState(false);
   const [isReachClicked, setIsReachClicked] = useState(false);
+  const [isFollow, setIsFollow] = useState(false);
+  const [isFollowClicked, setIsFollowClicked] = useState(false);
 
   // console.log("isReach: ", isReach);
 
@@ -64,8 +66,32 @@ const JobPost = ({ post }) => {
     });
   };
 
+  const handleFollow = async () => {
+    await axios.post("/api/organisationfollowers/followorg", {
+      orgId: post.organisation._id,
+    });
+    setIsFollowClicked(!isFollowClicked);
+    await axios.put("/api/organisations/updatefollowercount", {
+      orgId: post.organisation._id,
+      incrementBy: 1,
+    });
+  };
+
+  const handleUnFollow = async () => {
+    await axios.delete("/api/organisationfollowers/unfolloworg", {
+      data: {
+        orgId: post.organisation._id,
+      },
+    });
+    setIsFollowClicked(!isFollowClicked);
+    await axios.put("/api/organisations/updatefollowercount", {
+      orgId: post.organisation._id,
+      incrementBy: -1,
+    });
+  };
+
   useEffect(() => {
-    async function getLikedPostSingle() {
+    async function checkPostAlreadyLiked() {
       const response = await axios.get(`/api/postlikes/getlikedpostbypostidanduserid?postId=${post._id}`);
       if (response.data.resData) {
         setIsLike(true);
@@ -74,11 +100,11 @@ const JobPost = ({ post }) => {
       }
     }
 
-    getLikedPostSingle();
+    checkPostAlreadyLiked();
   }, [isLikeClicked]);
 
   useEffect(() => {
-    async function getReachedPostSingle() {
+    async function checkPostAlreadyReached() {
       const response = await axios.get(`/api/postreaches/getreachedpostbypostidanduserid?postId=${post._id}`);
       if (response.data.resData) {
         setIsReach(true);
@@ -87,8 +113,21 @@ const JobPost = ({ post }) => {
       }
     }
 
-    getReachedPostSingle();
+    checkPostAlreadyReached();
   }, [isReachClicked]);
+
+  useEffect(() => {
+    async function checkOrgAlreadyFollowed() {
+      const response = await axios.get(`/api/organisationfollowers/getfollowedorgbyuseridandorgId?orgId=${post.organisation._id}`);
+      if (response.data.resData) {
+        setIsFollow(true);
+      } else {
+        setIsFollow(false);
+      }
+    }
+
+    checkOrgAlreadyFollowed();
+  }, [isFollowClicked]);
 
   return (
     <div className="border h-auto bg-[#3d3d3d] border-[#3d3d3d] rounded-sm mb-4">
@@ -104,9 +143,18 @@ const JobPost = ({ post }) => {
                 <div className="text-sm mr-1">{post.organisation.location} </div>
                 <div className="mx-1">.</div>
                 <div className="text-sm mx-1">{post.organisation.followers} followers</div>
+                <div className="mx-1">.</div>
+                <div className="text-sm mx-1">{new Date(post.updatedAt).toLocaleDateString()}</div>
               </div>
             </div>
-            <div className="text-sm mr-10">Updated on : {new Date(post.updatedAt).toLocaleDateString()}</div>
+            <div>
+              <button
+                className={`text-sm border rounded-lg py-2 px-4 my-1 mx-5 border-black ${isFollow ? "bg-green-800" : "hover:bg-green-800"}`}
+                onClick={!isFollow ? handleFollow : handleUnFollow}
+              >
+                {isFollow ? "Following" : "Follow"}
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -3,8 +3,8 @@ import PostReach from "../models/post_reachModel.js";
 const reachPost = async (req, res) => {
   const { postId } = req.body;
 
-  console.log("reachpostId: ", postId);
-  console.log("reachuseridL ", req.user._id);
+  // console.log("reachpostId: ", postId);
+  // console.log("reachuseridL ", req.user._id);
 
   try {
     console.log("hit reach");

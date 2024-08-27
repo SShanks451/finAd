@@ -8,6 +8,7 @@ import postLikeRoutes from "./routes/post_likeRoutes.js";
 import organisationRoutes from "./routes/organisationRoutes.js";
 import organisationPostRoutes from "./routes/organisation_postRoutes.js";
 import postReachRoutes from "./routes/post_reachRoutes.js";
+import organisationFollowerRoutes from "./routes/organisation_followerRoutes.js";
 import { spawn } from "child_process";
 import User from "./models/userModel.js";
 import fs from "fs";
@@ -35,6 +36,7 @@ app.use("/api/postlikes", postLikeRoutes);
 app.use("/api/organisations", organisationRoutes);
 app.use("/api/organisationposts", organisationPostRoutes);
 app.use("/api/postreaches", postReachRoutes);
+app.use("/api/organisationfollowers", organisationFollowerRoutes);
 
 // app.post("/api/scrapperEngine", (req, res) => {
 //   const { handle, user } = req.body;
