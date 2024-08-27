@@ -4,10 +4,10 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
-import postLikeRoutes from "./routes/postLikeRoutes.js";
+import postLikeRoutes from "./routes/post_likeRoutes.js";
 import organisationRoutes from "./routes/organisationRoutes.js";
-import postOrganisationRoutes from "./routes/postOrganisationRoutes.js";
-import postReachRoutes from "./routes/postReachRoutes.js";
+import organisationPostRoutes from "./routes/organisation_postRoutes.js";
+import postReachRoutes from "./routes/post_reachRoutes.js";
 import { spawn } from "child_process";
 import User from "./models/userModel.js";
 import fs from "fs";
@@ -33,51 +33,51 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/postlikes", postLikeRoutes);
 app.use("/api/organisations", organisationRoutes);
-app.use("/api/postorganisation", postOrganisationRoutes);
-app.use("/api/reach", postReachRoutes);
+app.use("/api/organisationposts", organisationPostRoutes);
+app.use("/api/postreaches", postReachRoutes);
 
-app.post("/api/scrapperEngine", (req, res) => {
-  const { handle, user } = req.body;
-  console.log("pybjh: ", req.body);
+// app.post("/api/scrapperEngine", (req, res) => {
+//   const { handle, user } = req.body;
+//   console.log("pybjh: ", req.body);
 
-  let output = "";
-  const childPython = spawn("python3", ["zinsta/extra.py", handle]);
+//   let output = "";
+//   const childPython = spawn("python3", ["zinsta/extra.py", handle]);
 
-  childPython.stdout.on("data", (data) => {
-    output += data.toString();
-    console.log(output);
-  });
+//   childPython.stdout.on("data", (data) => {
+//     output += data.toString();
+//     console.log(output);
+//   });
 
-  childPython.stderr.on("data", (data) => {
-    console.error(`stderr: ${data}`);
-  });
+//   childPython.stderr.on("data", (data) => {
+//     console.error(`stderr: ${data}`);
+//   });
 
-  childPython.on("close", (code) => {
-    console.log(`child process exited with code ${code}`);
+//   childPython.on("close", (code) => {
+//     console.log(`child process exited with code ${code}`);
 
-    fs.readFile("instagram_data.json", async function (err, data) {
-      if (err) throw err;
+//     fs.readFile("instagram_data.json", async function (err, data) {
+//       if (err) throw err;
 
-      const reqData = JSON.parse(data);
-      const insta_followers = reqData[0].followers;
-      const insta_score = reqData[0].result;
-      console.log("insta_followes: ", insta_followers);
-      console.log("score: ", insta_score);
+//       const reqData = JSON.parse(data);
+//       const insta_followers = reqData[0].followers;
+//       const insta_score = reqData[0].result;
+//       console.log("insta_followes: ", insta_followers);
+//       console.log("score: ", insta_score);
 
-      const userupdated = await User.findByIdAndUpdate(user.id, { instaFollowers: insta_followers, instaScore: insta_score });
-    });
+//       const userupdated = await User.findByIdAndUpdate(user.id, { instaFollowers: insta_followers, instaScore: insta_score });
+//     });
 
-    res.send("simulation completed");
-  });
-});
+//     res.send("simulation completed");
+//   });
+// });
 
-app.post("/api/instadetails", (req, res) => {
-  const user = req.body;
-  const resp = User.findById(user.id);
-  res.status(201).json({
-    resp,
-  });
-});
+// app.post("/api/instadetails", (req, res) => {
+//   const user = req.body;
+//   const resp = User.findById(user.id);
+//   res.status(201).json({
+//     resp,
+//   });
+// });
 
 app.listen(PORT, () => {
   console.log(`Server listening on PORT ${PORT}`);

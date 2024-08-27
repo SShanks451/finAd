@@ -64,7 +64,7 @@ const CreatePost = ({ onClick, textContent, setTextContent, handlePost, handleIm
             <ClipLoader color="white" />
           )}
         </div>
-        <div className="mt-10 flex justify-center">
+        <div className="mt-5 flex justify-center">
           <RxCross1 className="cursor-pointer" size={30} onClick={onClick} />
         </div>
       </div>

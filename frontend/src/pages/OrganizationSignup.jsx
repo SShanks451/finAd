@@ -6,6 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import bgImage from "../images/Bg-image.png";
 
 const OrganizationSignup = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const OrganizationSignup = () => {
   const [website, setWebsite] = useState("");
   const [foundedIn, setFoundedIn] = useState("");
   const [tagline, setTagline] = useState("");
-  const [bio, setBio] = useState("");
+  const [about, setAbout] = useState("");
   const [image, setImage] = useState(null);
   const [base64image, setBase64Image] = useState(null);
 
@@ -44,26 +45,27 @@ const OrganizationSignup = () => {
     const response = await axios.post("/api/organisations/signup", {
       name: organizationName,
       tagline: tagline,
-      bio: bio,
       founded: foundedIn,
       businessEmail: organizationEmail,
       website: website,
       location: location,
+      about: about,
       plan: selectedPlan,
       password: password,
       logo: base64image,
     });
     console.log("response: ", response);
-    navigate(`/organizationsprofile?orgId=${response.data._id}`);
+    navigate(`/organizationprofile?orgId=${response.data._id}`);
     toast.success("Organization created");
   };
 
   return (
-    <div className="w-[100%]">
-      <div className="w-[60%] h-screen mx-4">
-        <div className="flex w-[100%] justify-center h-screen">
-          <div className="flex flex-col justify-center text-white w-[100%]">
-            <div className="bg-white w-[100%] flex flex-col justify-start items-center pt-10 pb-10 rounded-xl border border-black shadow-lg">
+    <div className="w-[100%] fixed">
+      <img src={bgImage} className="absolute opacity-10" alt="" />
+      <div className="h-screen mx-4">
+        <div className="flex justify-center h-screen">
+          <div className="flex flex-col justify-center text-white">
+            <div className="bg-white  flex flex-col justify-start items-center px-10 pb-16 pt-10 rounded-xl border border-black shadow-lg z-10 opacity-90">
               <div className="w-[80px] h-[80px] mb-4">
                 <img src={SiteLogo} />
               </div>
@@ -92,7 +94,7 @@ const OrganizationSignup = () => {
                       </div>
                       <input
                         name="image"
-                        className="relative w-2 mt-4 ml-2"
+                        className="relative w-[100px] mt-4 ml-2"
                         placeholder="Image"
                         type="file"
                         accept="image/*"
@@ -102,27 +104,32 @@ const OrganizationSignup = () => {
                     </div>
                     <div>
                       <BasicTextFields label="Organization Name" value={organizationName} disabled={true} />
-                      <BasicTextFields label="Tagline" value={tagline} onChange={(e) => setTagline(e.target.value)} />
+                      <BasicTextFields label="Website" value={website} onChange={(e) => setWebsite(e.target.value)} />
                     </div>
                     <div>
                       <BasicTextFields label="Organization Email" value={organizationEmail} disabled={true} />
-                      <BasicTextFields label="Bio" value={bio} onChange={(e) => setBio(e.target.value)} />
+                      <BasicTextFields label="Tagline" value={tagline} onChange={(e) => setTagline(e.target.value)} />
                     </div>
                   </div>
                   <div className="flex">
                     <div className="w-[120px] h-[120px] mr-5"></div>
                     <div>
                       <BasicTextFields label="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
-                      <BasicTextFields label="Website" value={website} onChange={(e) => setWebsite(e.target.value)} />
-                    </div>
-                    <div>
-                      <BasicTextFields label="Product Types" />
                       <BasicTextFields label="Founded In" value={foundedIn} onChange={(e) => setFoundedIn(e.target.value)} />
                     </div>
+                    <div>
+                      <BasicTextFields label="Industry Type" />
+                    </div>
                   </div>
-                  <div className="flex w-[60%] items-center">
-                    <div className="w-[80px] h-[80px] mr-5"></div>
-                    <div className="border text-center py-4 w-[100%] cursor-pointer">Background Image</div>
+                  <div className="mt-5 ml-20">
+                    <textarea
+                      className="px-2 py-1 border rounded-lg"
+                      placeholder="About the company..."
+                      rows={4}
+                      cols={60}
+                      value={about}
+                      onChange={(e) => setAbout(e.target.value)}
+                    />
                   </div>
                   <div className="mt-6">
                     <BasicButtons label="Next" width={300} onClick={() => setActive((active) => active + 1)} />
@@ -143,9 +150,9 @@ const OrganizationSignup = () => {
                         setSelectedPlan(1);
                       }}
                     >
-                      <div>PLAN 1</div>
+                      <div className="text-center">PLAN 1</div>
                       <div className="mt-10">Basic Platform Fee</div>
-                      <div className="mt-2">Influencer Recommendation</div>
+                      <div className="mt-2">Influencer Recommendation ❌</div>
                     </div>
                     <div className="ml-4">
                       <div
@@ -156,9 +163,9 @@ const OrganizationSignup = () => {
                           setSelectedPlan(2);
                         }}
                       >
-                        <div>PLAN 2</div>
+                        <div className="text-center">PLAN 2</div>
                         <div className="mt-10">Amount: </div>
-                        <div className="mt-2">Influencer Recommendation</div>
+                        <div className="mt-2">Influencer Recommendation </div>
                       </div>
                     </div>
                   </div>
@@ -174,7 +181,6 @@ const OrganizationSignup = () => {
           </div>
         </div>
       </div>
-      <div className="w-[40%]"></div>
     </div>
   );
 };

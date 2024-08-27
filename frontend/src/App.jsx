@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import SignInPage from "./components/SignInPage";
-import SignUpPage from "./components/SignUpPage";
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
 import Profile from "./components/Profile";
 import { Provider } from "react-redux";
 import appStore from "./redux/appStore";
@@ -58,7 +58,7 @@ function App() {
       element: <OrganizationSignup />,
     },
     {
-      path: "/organizationsprofile",
+      path: "/organizationprofile",
       element: <OrganizationProfile />,
     },
     {

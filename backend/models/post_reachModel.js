@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const postOrganisationReachSchema = mongoose.Schema(
+const postReachSchema = mongoose.Schema(
   {
     post: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "PostOrganisation",
+      ref: "OrganisationPost",
       required: true,
     },
     user: {
@@ -16,6 +16,6 @@ const postOrganisationReachSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const PostOrganisationReach = mongoose.model("PostOrganisationReach", postOrganisationReachSchema);
+const PostReach = mongoose.model("PostReach", postReachSchema);
 
-export default PostOrganisationReach;
+export default PostReach;

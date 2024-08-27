@@ -9,8 +9,8 @@ const JobFeedpage = () => {
 
   useEffect(() => {
     async function getAllJobPosts() {
-      const response = await axios.get("/api/postorganisation/allpostsorganisation");
-      console.log(response.data);
+      const response = await axios.get("/api/organisationposts/getallposts");
+      // console.log(response.data);
       setAllPosts(response.data);
     }
 

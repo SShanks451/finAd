@@ -15,6 +15,6 @@ router.post("/signup", createOrganisation);
 router.post("/signin", loginOrganisation);
 router.post("/logout", logoutOrganisation);
 router.get("/getorganisationbyid/:id", authMiddleware, getOrganisationById);
-router.put("/updateorganisation", authMiddleware, updateOrganisation);
+// router.put("/updateorganisation", authMiddleware, updateOrganisation);
 
 export default router;

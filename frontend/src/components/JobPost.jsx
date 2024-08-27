@@ -9,14 +9,17 @@ import { FaRegArrowAltCircleUp } from "react-icons/fa";
 
 const JobPost = ({ post }) => {
   // console.log("post: ", post);
+
   const image_array = post.pictures;
-  console.log(image_array);
+  // console.log(image_array);
 
   const [imageActive, setImageActive] = useState(0);
   const [isLike, setIsLike] = useState(false);
   const [isLikeClicked, setIsLikeClicked] = useState(false);
   const [isReach, setIsReach] = useState(false);
   const [isReachClicked, setIsReachClicked] = useState(false);
+
+  // console.log("isReach: ", isReach);
 
   const handlePrevImage = () => {
     setImageActive((imageActive) => (imageActive - 1 < 0 ? image_array.length - 1 : imageActive - 1));
@@ -31,7 +34,7 @@ const JobPost = ({ post }) => {
       postId: post._id,
     });
     setIsLikeClicked(!isLikeClicked);
-    await axios.put("/api/postorganisation/updatelikecount", {
+    await axios.put("/api/organisationposts/updatelikecount", {
       postId: post._id,
       incrementBy: 1,
     });
@@ -44,39 +47,26 @@ const JobPost = ({ post }) => {
       },
     });
     setIsLikeClicked(!isLikeClicked);
-    await axios.put("/api/postorganisation/updatelikecount", {
+    await axios.put("/api/organisationposts/updatelikecount", {
       postId: post._id,
       incrementBy: -1,
     });
   };
 
   const handleReach = async () => {
-    await axios.post("/api/reach/reachpost", {
+    await axios.post("/api/postreaches/reachpost", {
       postId: post._id,
     });
-    setIsReachClicked(!isLikeClicked);
-    await axios.put("/api/postorganisation/updatereachcount", {
+    setIsReachClicked(!isReachClicked);
+    await axios.put("/api/organisationposts/updatereachcount", {
       postId: post._id,
       incrementBy: 1,
     });
   };
 
-  // const handleUnReach = async () => {
-  //   await axios.delete("/api/reach/unreachpost", {
-  //     data: {
-  //       postId: post._id,
-  //     },
-  //   });
-  //   setIsReachClicked(!isLikeClicked);
-  //   await axios.put("/api/postorganisation/updatereachcount", {
-  //     postId: post._id,
-  //     incrementBy: -1,
-  //   });
-  // };
-
   useEffect(() => {
     async function getLikedPostSingle() {
-      const response = await axios.get(`/api/postlikes/getlikedpostsingle?postId=${post._id}`);
+      const response = await axios.get(`/api/postlikes/getlikedpostbypostidanduserid?postId=${post._id}`);
       if (response.data.resData) {
         setIsLike(true);
       } else {
@@ -89,7 +79,7 @@ const JobPost = ({ post }) => {
 
   useEffect(() => {
     async function getReachedPostSingle() {
-      const response = await axios.get(`/api/reach/getreachedpostsingle?postId=${post._id}`);
+      const response = await axios.get(`/api/postreaches/getreachedpostbypostidanduserid?postId=${post._id}`);
       if (response.data.resData) {
         setIsReach(true);
       } else {
@@ -104,27 +94,29 @@ const JobPost = ({ post }) => {
     <div className="border h-auto bg-[#3d3d3d] border-[#3d3d3d] rounded-sm mb-4">
       <div className="flex justify-between">
         <div className="flex w-[100%]">
-          <div className="w-[10%] h-[4rem] border m-4">
-            <img src={post.organisation.logo} alt="" />
+          <div className="w-[100px] h-[80px] m-2">
+            <img className="" src={post.organisation.logo} alt="" />
           </div>
-          <div>
-            <div className="mt-4 ml-2 flex">
-              <div className="">{post.organisation.name}</div>
+          <div className="w-[100%] flex justify-between items-center">
+            <div className="items-center">
+              <div className="text-md">{post.organisation.name}</div>
+              <div className="flex items-center">
+                <div className="text-sm mr-1">{post.organisation.location} </div>
+                <div className="mx-1">.</div>
+                <div className="text-sm mx-1">{post.organisation.followers} followers</div>
+              </div>
             </div>
+            <div className="text-sm mr-10">Updated on : {new Date(post.updatedAt).toLocaleDateString()}</div>
           </div>
         </div>
       </div>
       <div className="mx-4 mb-4 mt-1 whitespace-pre-wrap">{post.content}</div>
-      {/* {post.images.map((im) => (
-        <div className="flex justify-center">
-          <img className="" src={im.url} alt="post-img" />
-        </div>
-      ))} */}
+
       {image_array && image_array.length > 0 && (
         <div className="flex justify-center items-center">
-          <img className="w-[50px] h-[50px] cursor-pointer" src={leftArrow} alt="left-arrow" onClick={handlePrevImage} />
+          {/* <img className="w-[30px] h-[30px] cursor-pointer" src={leftArrow} alt="left-arrow" onClick={handlePrevImage} /> */}
           <img className="" src={image_array[imageActive].url} alt="post-image" />
-          <img className="w-[50px] h-[50px] cursor-pointer" src={rightArrow} alt="right-arrow" onClick={handleNextImage} />
+          {/* <img className="w-[30px] h-[30px] cursor-pointer" src={rightArrow} alt="right-arrow" onClick={handleNextImage} /> */}
         </div>
       )}
 
@@ -144,13 +136,13 @@ const JobPost = ({ post }) => {
         <div className="mx-4 cursor-pointer mt-4" onClick={!isReach ? handleReach : null}>
           <FaRegArrowAltCircleUp className="mx-auto" size={30} color={isReach ? "green" : ""} />
           <div className="text-xs flex justify-center">
-            <div>Reach</div>
+            <div className={`${isReach ? "text-green-600" : ""}`}>Reach</div>
           </div>
         </div>
         <div className="mx-4 cursor-pointer mt-4" onClick={!isLike ? handleLike : handleDislike}>
           <AiOutlineLike className="mx-auto" size={30} color={isLike ? "green" : ""} />
           <div className="text-xs flex justify-center">
-            <div>Like</div>
+            <div className={`${isLike ? "text-green-600" : ""}`}>Like</div>
           </div>
         </div>
       </div>

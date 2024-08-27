@@ -20,7 +20,7 @@ const uploadToCloudinary = async (image, folder = "my-profile") => {
 };
 
 const createOrganisation = async (req, res) => {
-  const { name, tagline, bio, founded, businessEmail, website, location, plan, password, logo } = req.body;
+  const { name, tagline, about, founded, businessEmail, website, location, plan, password, logo } = req.body;
 
   const existingOrganisation = await Organisation.findOne({ businessEmail });
   const existingUser = await Organisation.findOne({ businessEmail });
@@ -41,11 +41,10 @@ const createOrganisation = async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   try {
-    console.log("before");
     const newOrganisation = await Organisation.create({
       name,
       tagline,
-      bio,
+      about,
       founded,
       businessEmail,
       website,
@@ -54,8 +53,7 @@ const createOrganisation = async (req, res) => {
       logo: companyLogo,
       password: hashedPassword,
     });
-    console.log("after");
-    console.log("New Organisation: ", newOrganisation);
+
     generateToken(res, newOrganisation._id);
     res.status(201).json(newOrganisation);
   } catch (error) {
@@ -66,7 +64,7 @@ const createOrganisation = async (req, res) => {
 const getOrganisationById = async (req, res) => {
   try {
     const organisation = await Organisation.findById(req.params.id);
-    console.log("organisation: ", organisation);
+    // console.log("organisation: ", organisation);
     if (!organisation) {
       return res.status(404).json({ message: "Organisation not found" });
     }

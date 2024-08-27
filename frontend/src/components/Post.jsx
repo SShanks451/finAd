@@ -49,7 +49,7 @@ const Post = ({ post }) => {
 
   useEffect(() => {
     async function getLikedPostSingle() {
-      const response = await axios.get(`/api/postlikes/getlikedpostsingle?postId=${post._id}`);
+      const response = await axios.get(`/api/postlikes/getlikedpostbypostidanduserid?postId=${post._id}`);
       if (response.data.resData) {
         setIsLike(true);
       } else {
@@ -66,30 +66,27 @@ const Post = ({ post }) => {
         <div className="flex w-[100%]">
           <div className="w-[10%] h-[4rem] border m-4 bg-green-600"></div>
           <div>
-            <div className="mt-4 ml-3 flex">
+            <div className="mt-4 ml-3 flex ">
               <div>{post.user.name}</div>
               {/* <div className="ml-2 content-center">.</div> */}
             </div>
-            <div className="text-xs flex">
+            <div className="text-xs flex items-center">
               <div className="ml-3">Platinum Influencer</div>
               <div className="ml-2">|</div>
-              <div className="ml-2">5000</div>
+              <div className="ml-2">5000 followers</div>
             </div>
+            {/* <div className="text-xs ml-3 flex items-center">50 / 100 score</div> */}
           </div>
         </div>
         <div className=""></div>
       </div>
       <div className="mx-4 mb-4 mt-1 whitespace-pre-wrap">{post.textContent}</div>
-      {/* {post.images.map((im) => (
-        <div className="flex justify-center">
-          <img className="" src={im.url} alt="post-img" />
-        </div>
-      ))} */}
+
       {image_array && image_array.length > 0 && (
         <div className="flex justify-center items-center">
-          <img className="w-[50px] h-[50px] cursor-pointer" src={leftArrow} alt="left-arrow" onClick={handlePrevImage} />
+          {/* <img className="w-[20px] h-[20px] cursor-pointer" src={leftArrow} alt="left-arrow" onClick={handlePrevImage} /> */}
           <img className="" src={image_array[imageActive].url} alt="post-image" />
-          <img className="w-[50px] h-[50px] cursor-pointer" src={rightArrow} alt="right-arrow" onClick={handleNextImage} />
+          {/* <img className="w-[20px] h-[20px] cursor-pointer" src={rightArrow} alt="right-arrow" onClick={handleNextImage} /> */}
         </div>
       )}
 

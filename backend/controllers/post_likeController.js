@@ -1,4 +1,4 @@
-import PostLike from "../models/postLikeModel.js";
+import PostLike from "../models/post_likeModel.js";
 
 const likePost = async (req, res) => {
   const { postId } = req.body;
@@ -15,7 +15,7 @@ const likePost = async (req, res) => {
   }
 };
 
-const dislikePost = async (req, res) => {
+const unlikePost = async (req, res) => {
   const { postId } = req.body;
 
   try {
@@ -30,7 +30,7 @@ const dislikePost = async (req, res) => {
   }
 };
 
-const getLikedPostSingle = async (req, res) => {
+const getLikedPostByPostIdAndUserId = async (req, res) => {
   const userId = req.user._id;
   const postId = req.query.postId;
   // console.log("postid: ", postId);
@@ -46,4 +46,4 @@ const getLikedPostSingle = async (req, res) => {
   }
 };
 
-export { likePost, dislikePost, getLikedPostSingle };
+export { likePost, unlikePost, getLikedPostByPostIdAndUserId };
